@@ -1,0 +1,7 @@
+flask
+os
+docx
+pptx
+PyMuPDF
+fpdf
+werkzeug
