@@ -5,3 +5,4 @@ pptx
 PyMuPDF
 fpdf
 werkzeug
+gunicorn
