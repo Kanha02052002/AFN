@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload and Conversion</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>File Upload and Conversion</h1>
+        
+        <!-- File Upload Form -->
+        <form action="/" method="POST" enctype="multipart/form-data" class="upload-form">
+            <label for="file" class="file-label">
+                <input type="file" name="file" id="file" required onchange="showFileName()">
+                <span>Choose a file to upload</span>
+            </label>
+            <div id="file-name" class="file-name"></div>
+            <button type="submit">Upload</button>
+        </form>
+
+        {% if uploaded %}
+        <h2>File uploaded: {{ filename }}</h2>
+        <form action="/convert" method="POST">
+            <input type="hidden" name="file_path" value="{{ file_path }}">
+            <h3>Select conversion formats:</h3>
+            <div class="checkbox-container">
+                <label>
+                    <input type="checkbox" name="formats" value="pdf"> Convert to PDF
+                </label>
+                <label>
+                    <input type="checkbox" name="formats" value="docx"> Convert to DOCX
+                </label>
+                <label>
+                    <input type="checkbox" name="formats" value="pptx"> Convert to PPTX
+                </label>
+            </div>
+            <input type="submit" value="Convert">
+        </form>
+        {% endif %}
+
+        {% if converted_files %}
+        <!-- Show Converted Files -->
+        <h2>Converted Files:</h2>
+        <ul>
+            {% for file in converted_files %}
+            <li>
+                <span>{{ file }}</span>
+                <a href="{{ url_for('download', filename=file) }}" download>Download</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- Restart Button -->
+        <form action="/restart" method="POST">
+            <button type="submit" class="restart-button">Restart</button>
+        </form>
+    </div>
+
+    <script>
+        function showFileName() {
+            const input = document.getElementById('file');
+            const fileNameDiv = document.getElementById('file-name');
+            fileNameDiv.textContent = input.files[0].name;
+        }
+    </script>
+</body>
+</html>
